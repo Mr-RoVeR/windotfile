@@ -1,4 +1,3 @@
-j
 $env:STARSHIP_CONFIG = "C:\Users\harsh\.config\starship.toml"
 Invoke-Expression (&starship init powershell)
 
