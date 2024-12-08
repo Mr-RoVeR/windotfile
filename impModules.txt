@@ -1,0 +1,7 @@
+Install-Module -Name Terminal-Icons
+Install-Module -Name Wnget-Essentials
+Install-Module -Name TextTable
+Install-Module -Name ModuleFast
+Install-Module -Name TableUI
+Install-Module -Name Foil
+
