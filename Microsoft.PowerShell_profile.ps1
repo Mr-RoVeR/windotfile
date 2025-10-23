@@ -18,6 +18,9 @@ Register-ArgumentCompleter -Native -CommandName winget -ScriptBlock {
             [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
         }
 }
+
+Import-Module -Name Terminal-Icons 
+Import-Module -Name Winget-Essentials
 if (-not (Get-Module posh-git -ErrorAction SilentlyContinue)) {
     Import-Module posh-git -DisableNameChecking
 }
