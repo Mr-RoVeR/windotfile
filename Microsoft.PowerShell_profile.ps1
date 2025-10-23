@@ -1,5 +1,13 @@
-$env:STARSHIP_CONFIG = "C:\Users\harsh\.config\starship.toml"
-Invoke-Expression (&starship init powershell)
+#$env:STARSHIP_CONFIG = "$USERS.config\starship.toml"
+#Invoke-Expression (&starship init powershell)
+function global:prompt {
+    if (-not $global:__starshipLoaded) {
+        $global:__starshipLoaded = $true
+        Invoke-Expression (&starship init powershell)
+    }
+    & $function:prompt
+}
+
 
 Register-ArgumentCompleter -Native -CommandName winget -ScriptBlock {
     param($wordToComplete, $commandAst, $cursorPosition)
@@ -10,10 +18,13 @@ Register-ArgumentCompleter -Native -CommandName winget -ScriptBlock {
             [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
         }
 }
-Import-Module -Name Terminal-Icons
-Import-Module -Name Winget-Essentials
-Import-Module -Name ModuleFast
-Import-Module -Name ChocolateyGet
+if (-not (Get-Module posh-git -ErrorAction SilentlyContinue)) {
+    Import-Module posh-git -DisableNameChecking
+}
+
+
+
+gh completion -s powershell | Out-String | Invoke-Expression
 
 
 Set-PSReadlineKeyHandler -Key Tab -Function Complete
@@ -43,4 +54,12 @@ Set-Alias ..... 'back4'
 function back1 { Set-Location .. }
 function back2 { Set-Location ../.. }
 function back3 { Set-Location ../../.. }
-function back4 { Set-Location ../../../.. }
+function back4 { Set-Location ../../../.. }    
+$ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1" 
+if (Test-Path($ChocolateyProfile)) { Import-Module "$ChocolateyProfile" }
+
+# Git aliases
+function Gis { git status }
+function Gia { git add . }
+function Gic { git commit -m "$args" }
+function Gid { git diff }
